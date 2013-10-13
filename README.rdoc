@@ -97,6 +97,16 @@ You probably want to access the title, definitions, etc. of your badges in your 
       end
     end
 
+== Helpers
+
+    class User < ActiveRecord::Base
+      ...
+      include BadgerBadger::Helpers
+    end
+
+    user = User.find(1)
+    user.has_badge? :foo
+
 == License
 Copyright 2013 Jordan Hollinger
 
