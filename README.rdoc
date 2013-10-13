@@ -100,4 +100,4 @@ You probably want to access the title, definitions, etc. of your badges in your 
 == License
 Copyright 2013 Jordan Hollinger
 
-Licensed under the Apache License
+Licensed under the MIT License
