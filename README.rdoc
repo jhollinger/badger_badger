@@ -1,0 +1,97 @@
+= Badger Badger
+
+badger_badger is a DSL for defining and awarding badges. Unlike some similar libraries, badger_badger does
+not attempt to tie itself to a framework or ORM. By defining just a couple of simple callbacks, you can
+hook it into whatever you're using.
+
+== Installation
+
+    # Add this to your Gemfile
+    gem 'badger_badger', git: 'git://github.com/jhollinger/badger_badger.git'
+
+== Configuration
+
+In all following examples, we'll assume a Rails app. But it would look nearly identical in Sinatra, etc.
+Let's assume you've created a Badge model, and User.has_many :badges.
+
+    # Put basic configuration in config/initializers/badger_badger.rb
+    BadgerBadger.config do
+      # Load badge definitions from file (optional - you could define them here if you wanted)
+      use Rails.root.join('lib', 'badges.rb')
+
+      # Callback when a badge is newly awarded
+      award do |user, badge|
+        user.badges.create(name: badge.to_sym)
+        # This doesn't have to be just for persistence. Maybe you want to email the user, send bitcoins, or tweet it.
+      end
+
+      # Callback to list awarded badges
+      list do |user|
+        user.badges.map { |badge| badge.name.to_sym }
+      end
+    end
+
+== Definitions
+
+This is the file in lib/badges.rb referended above. Alternatively, you could just put this code in the configure block.
+
+    badge "Junior Widgeteer" do
+      desc "User has created his first widget"
+      check do |user|
+        user.widgets.any?
+      end
+    end
+
+    badge "Senior Widgeteer" do
+      desc "User has created his 100th widget"
+      check do |user|
+        user.widgets.count >= 100
+      end
+    end
+
+
+== Awarding badges
+
+In Rails, you might put this in an mode's after_save or a controllers after_filter. This will check for all badges
+the user doesn't yet have, and award them if the checks pass.
+
+    BadgerBadger.check_for_badges! user
+
+If you've placed your badges into groups, and you know which group(s) are likely to be affected, you can limit the
+number of badges that are checked. This might run much more quickly.
+
+    BadgerBadger.check_for_badges! user, :widgets
+
+Or check multiple groups:
+
+    BadgerBadger.check_for_badges! user, :widgets, :bar
+
+If your badge checks are resource or time intensive, you may wish to move your call to BadgerBadger.check_for_badges!
+to a background worker like Sidekiq or Resque.
+
+== Accessing the definitions
+
+You probably want to access the title, definitions, etc. of your badges in your application code. Here's one example:
+
+    class Badge < ActiveRecord::Base
+      ...
+
+      def title
+        badge_def.title
+      end
+
+      def description
+        badge_def.description
+      end
+
+      private
+
+      def badge_def
+        BadgerBadger.find(self.name)
+      end
+    end
+
+== License
+Copyright 2013 Jordan Hollinger
+
+Licensed under the Apache License
