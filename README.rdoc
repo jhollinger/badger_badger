@@ -4,6 +4,12 @@ badger_badger is a DSL for defining and awarding badges. Unlike some similar lib
 not attempt to tie itself to a framework or ORM. By defining just a couple of simple callbacks, you can
 hook it into whatever you're using.
 
+== Experimental!
+
+badger_badger is something I pulled out of the lib/ directory in one of my Rails projects. Compared to other
+badge libraries I looked at, it's extremely abstract. Perhaps too abstract, but it seems to work well for the
+kind of badge system that app is using. Warning, it may change radially, or be deleted, in the future.
+
 == Installation
 
     # Add this to your Gemfile
