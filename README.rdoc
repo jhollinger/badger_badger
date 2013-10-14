@@ -33,7 +33,7 @@ Let's assume you've created a Badge model, and User.has_many :badges.
 
       # Callback to list awarded badges
       list do |user|
-        user.badges.map { |badge| badge.name.to_sym }
+        user.badges.reload.map { |badge| badge.name.to_sym }
       end
     end
 
