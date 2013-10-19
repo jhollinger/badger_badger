@@ -8,7 +8,7 @@ hook it into whatever you're using.
 
 badger_badger is something I pulled out of the lib/ directory in one of my Rails projects. Compared to other
 badge libraries I looked at, it's extremely abstract. Perhaps too abstract, but it seems to work well for the
-kind of badge system that app is using. Warning, it may change radially, or be deleted, in the future.
+kind of badge system that app is using. Warning, it may change radically, or be deleted, in the future.
 
 == Installation
 
@@ -23,7 +23,7 @@ Let's assume you've created a Badge model, and User.has_many :badges.
     # Put basic configuration in config/initializers/badger_badger.rb
     BadgerBadger.config do
       # Load badge definitions from file (optional - you could define them here if you wanted)
-      use Rails.root.join('lib', 'badges.rb')
+      load_file Rails.root.join('lib', 'badges.rb')
 
       # Callback when a badge is newly awarded
       award do |user, badge|

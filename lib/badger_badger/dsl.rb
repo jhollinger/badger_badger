@@ -11,7 +11,7 @@ module BadgerBadger
     end
 
     # Load badge definitions, or other configuration, from a file
-    def use(defs_path)
+    def load_file(defs_path)
       defs = File.read(defs_path)
       class_eval defs
     end
