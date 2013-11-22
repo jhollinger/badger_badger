@@ -8,7 +8,7 @@ module BadgerBadger
     def title(new_title = nil)
       if new_title
         @title = new_title
-        @to_sym = new_title.downcase.sub(/\s+/, '_').to_sym
+        @to_sym = new_title.downcase.gsub(/\s+/, '_').to_sym
       end
       @title.to_s
     end
